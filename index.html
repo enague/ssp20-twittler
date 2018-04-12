@@ -3,25 +3,96 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <link rel='stylesheet' href='index.css'>
+    <title> Twittler </title>
   </head>
   <body>
-    <script>
+  	 
+  	 <h1 id='heading'> Welcome to Twittler! </h1>
+	
+	<div id='main_container'>
 
-      $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
+  	<p> <b>Twittler</b> is a clone of of the famous <i>"Twitter"</i> made in the <b> Hack Reactor Precourse </b> class. Click on the button below to refresh new tweets: </p>
+  	 
+  </div>
 
+
+  <div id='spacing'>
+
+  	<button id='tweet_number'> New Tweets</button> 
+
+  </div> 
+
+  <div>
+
+  	<h3 id='tweet_submit'> What is on your mind?</h3>
+  	<h4> <i>Let the world know what you are up to! </i></h4>
+
+  	<input type="text">
+  	<button> Submit</button>
+
+  </div>
+
+  <div id= 'tweet_title'> List of All New Tweets:</div>
+  <div id= 'tweets_displayed'></div>
+
+
+
+  <div>
+  <script>
+  		
+
+  $(document).ready( function() {
+
+		  //var $body = $('body');
+     // $body.html('');
+
+
+     function newTweets(user) {
+
+      if (user) {
+        var index =streams.users[user].length -1;
+
+      } else {
         var index = streams.home.length - 1;
+        
+        }
+
         while(index >= 0){
-          var tweet = streams.home[index];
+          if (user){
+            var tweet= streams.users[user][index];
+          } else {
+            var tweet= streams.home[index]
+          }
           var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
+          $tweet.html('<div class="oneTweet"> <div class="user_name"> <a class='+ tweet.user+ '>'+ '@'+ tweet.user + '</a></div>'+ "<span id='colon'>" + ':' + "</span>" + "<span id='tweet_message'>" + tweet.message + "</span>" + "<span id='time'>"+ tweet.created_at + "</span>"+ '</div>');
+          $tweet.prependTo('#tweets_displayed');
           index -= 1;
         }
 
-      });
+      };
+
+      newTweets();
+
+        $('#spacing').on("click", function() {
+              newTweets();
+
+        });
+
+        $('#tweets_displayed').on('click', 'a', function(e) {
+          e.preventDefault();
+          $('.oneTweet').hide().fadeOut('slow');
+          var user= this.getAttribute('class');
+          console.log(user);
+          newTweets(user);
+
+        })
+
+      
+  });
+
 
     </script>
+</div>
   </body>
 </html>
